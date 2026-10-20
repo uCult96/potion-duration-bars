@@ -15,6 +15,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -35,6 +36,9 @@ public class PotionBarsPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -53,7 +57,7 @@ public class PotionBarsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		refreshFromClient();
+		clientThread.invoke(this::refreshFromClient);
 	}
 
 	@Override
@@ -205,3 +209,4 @@ public class PotionBarsPlugin extends Plugin
 		}
 	}
 }
+
